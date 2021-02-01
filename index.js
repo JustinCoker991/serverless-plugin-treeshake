@@ -405,7 +405,7 @@ module.exports = class {
     });
 
     const params = await this.excludeDevDependencies({exclude, include})
-    return await this.resolveFilePathsFromPatterns(params)
+    return this.resolveFilePathsFromPatterns(params)
 
   }
 
@@ -419,6 +419,7 @@ module.exports = class {
       // everything... Instead we fallback to the default serverless
       // packaging functionality for non js functions.
 
+      // eslint-disable-next-line no-warning-comments
       // TODO: create a handler than can skip tree-shake methods all-together.
       return await this.resolveFilePathsNonJSFunction(fnName)
     }

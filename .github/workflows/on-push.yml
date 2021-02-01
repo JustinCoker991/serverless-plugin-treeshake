@@ -26,18 +26,18 @@ jobs:
 ###############################################################################
 # COMMITLINT                                                                  #
 ###############################################################################
-  commitlint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Commit Lint
-      uses: wagoid/commitlint-github-action@v2.1.6
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # commitlint:
+  #   needs: setup
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
+  #   - name: Commit Lint
+  #     uses: wagoid/commitlint-github-action@v2.1.6
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 ###############################################################################
 # ESLINT                                                                      #
