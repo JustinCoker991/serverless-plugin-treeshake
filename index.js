@@ -415,7 +415,7 @@ module.exports = class {
     const { package: pkg = {}, handler, runtime } = service.getFunction(fnName);
     const { include = [], exclude = [] } = pkg;
 
-    if (!runtime.startsWith('node')) {
+    if (runtime && !runtime.startsWith('node')) {
       // in the case of a non-js function, the tree shaker will simply drop
       // everything... Instead we fallback to the default serverless
       // packaging functionality for non js functions.
