@@ -389,6 +389,7 @@ module.exports = class {
       });
     });
   }
+
   /**
    * 
    * @param {string} functionName 
@@ -421,7 +422,7 @@ module.exports = class {
 
       // eslint-disable-next-line no-warning-comments
       // TODO: create a handler than can skip tree-shake methods all-together.
-      return await this.resolveFilePathsNonJSFunction(fnName)
+      return this.resolveFilePathsNonJSFunction(fnName)
     }
 
     const { excludes, includes } = await Parallel({
