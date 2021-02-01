@@ -389,11 +389,39 @@ module.exports = class {
       });
     });
   }
+  /**
+   * 
+   * @param {string} functionName 
+   * this is an async/await version of the default resolveFielPathsFunctions
+   * in serverless/lib/plugins/package/lib/packageService.js
+   */
+  async resolveFilePathsNonJSFunction(functionName) {
+    const functionObject = this.serverless.service.getFunction(functionName);
+    const funcPackageConfig = functionObject.package || {};
+
+    const { exclude, include } = await Parallel({
+      exclude: async () => this.getExcludes(funcPackageConfig.exclude, true),
+      include: async () => this.getIncludes(funcPackageConfig.include),
+    });
+
+    const params = await this.excludeDevDependencies({exclude, include})
+    return await this.resolveFilePathsFromPatterns(params)
+
+  }
 
   async resolveFilePathsFunction(fnName) {
     const { service } = this.serverless;
-    const { package: pkg = {}, handler } = service.getFunction(fnName);
+    const { package: pkg = {}, handler, runtime } = service.getFunction(fnName);
     const { include = [], exclude = [] } = pkg;
+
+    if (!runtime.startsWith('node')) {
+      // in the case of a non-js function, the tree shaker will simply drop
+      // everything... Instead we fallback to the default serverless
+      // packaging functionality for non js functions.
+
+      // TODO: create a handler than can skip tree-shake methods all-together.
+      return await this.resolveFilePathsNonJSFunction(fnName)
+    }
 
     const { excludes, includes } = await Parallel({
       excludes: async () => this.getExcludes(exclude, true),
